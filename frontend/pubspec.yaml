@@ -1,0 +1,90 @@
+name: fiz_go
+description: "Plataforma mobile/web para conectar clientes e profissionais de serviços gerais"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # UI & Design
+  cupertino_icons: ^1.0.6
+  material_design_icons_flutter: ^7.0.7296
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.0
+  
+  # State Management
+  flutter_bloc: ^8.1.3
+  equatable: ^2.0.5
+  
+  # HTTP & Networking
+  dio: ^5.4.0
+  retrofit: ^4.0.3
+  json_annotation: ^4.8.1
+  
+  # Storage & Persistence
+  shared_preferences: ^2.2.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # Authentication
+  google_sign_in: ^6.1.6
+  firebase_auth: ^4.15.3
+  firebase_core: ^2.24.2
+  
+  # Location Services
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
+  google_maps_flutter: ^2.5.0
+  
+  # Image & File Handling
+  image_picker: ^1.0.4
+  permission_handler: ^11.1.0
+  
+  # Real-time Communication
+  socket_io_client: ^2.0.3+1
+  
+  # Utils
+  intl: ^0.19.0
+  uuid: ^4.2.1
+  url_launcher: ^6.2.1
+  package_info_plus: ^4.2.0
+  
+  # Payment
+  flutter_pix: ^2.0.8
+  
+  # Notifications
+  flutter_local_notifications: ^16.3.0
+  firebase_messaging: ^14.7.10
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  # Code Generation
+  build_runner: ^2.4.7
+  retrofit_generator: ^8.0.6
+  json_serializable: ^6.7.1
+  hive_generator: ^2.0.1
+  
+  # Linting
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+  
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
