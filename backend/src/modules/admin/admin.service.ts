@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, UserStatus } from '../users/entities/user.entity';
+import { User, UserStatus, UserRole } from '../users/entities/user.entity';
 import { Order } from '../orders/entities/order.entity';
 import { Service } from '../services/entities/service.entity';
 import { Payment } from '../payments/entities/payment.entity';
@@ -33,8 +33,8 @@ export class AdminService {
       totalReviews,
     ] = await Promise.all([
       this.userRepository.count(),
-      this.userRepository.count({ where: { role: 'provider' } }),
-      this.userRepository.count({ where: { role: 'client' } }),
+      this.userRepository.count({ where: { role: UserRole.PROVIDER } }),
+      this.userRepository.count({ where: { role: UserRole.CLIENT } }),
       this.orderRepository.count(),
       this.serviceRepository.count(),
       this.paymentRepository.count(),
