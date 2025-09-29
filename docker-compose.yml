@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: fiz-go-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fizgo
+      POSTGRES_USER: fizgo_user
+      POSTGRES_PASSWORD: fizgo_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fizgo-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: fiz-go-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fizgo-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fiz-go-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://fizgo_user:fizgo_password@postgres:5432/fizgo
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your-jwt-secret-key
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - fizgo-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  fizgo-network:
+    driver: bridge
