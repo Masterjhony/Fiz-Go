@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agent Log Entry Schema",
+  "description": "Schema para validar entradas no log de agentes do Fiz-Go",
+  "type": "object",
+  "required": ["timestamp", "event_type", "action"],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp ISO 8601 do evento"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "code_change",
+        "file_operation",
+        "search_query",
+        "error_detected",
+        "test_execution",
+        "deployment",
+        "security_event",
+        "performance_metric",
+        "user_interaction",
+        "system_event",
+        "project_init",
+        "config_change",
+        "dependency_update",
+        "documentation_update"
+      ],
+      "description": "Tipo do evento registrado"
+    },
+    "action": {
+      "type": "string",
+      "description": "Ação específica executada"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "Identificador do agente que executou a ação"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Identificador da sessão de trabalho"
+    },
+    "details": {
+      "type": "object",
+      "description": "Detalhes específicos do evento",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Mensagem descritiva do evento"
+        },
+        "files_affected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lista de arquivos afetados pela ação"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Componentes do sistema envolvidos"
+        },
+        "metrics": {
+          "type": "object",
+          "description": "Métricas relacionadas ao evento",
+          "properties": {
+            "duration_ms": {
+              "type": "number",
+              "description": "Duração da operação em milissegundos"
+            },
+            "lines_changed": {
+              "type": "number",
+              "description": "Número de linhas de código alteradas"
+            },
+            "files_count": {
+              "type": "number",
+              "description": "Número de arquivos processados"
+            }
+          }
+        },
+        "error": {
+          "type": "object",
+          "description": "Informações de erro se aplicável",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "Código do erro"
+            },
+            "message": {
+              "type": "string",
+              "description": "Mensagem de erro"
+            },
+            "stack_trace": {
+              "type": "string",
+              "description": "Stack trace do erro"
+            }
+          }
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Contexto adicional do evento",
+      "properties": {
+        "user_request": {
+          "type": "string",
+          "description": "Solicitação original do usuário"
+        },
+        "project_phase": {
+          "type": "string",
+          "enum": ["planning", "development", "testing", "deployment", "maintenance"],
+          "description": "Fase atual do projeto"
+        },
+        "environment": {
+          "type": "string",
+          "enum": ["development", "staging", "production"],
+          "description": "Ambiente onde a ação foi executada"
+        },
+        "related_events": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "IDs de eventos relacionados"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Metadados técnicos",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Versão do sistema de agentes"
+        },
+        "git_commit": {
+          "type": "string",
+          "description": "Commit hash relacionado"
+        },
+        "branch": {
+          "type": "string",
+          "description": "Branch Git ativa"
+        },
+        "tool_versions": {
+          "type": "object",
+          "description": "Versões das ferramentas utilizadas"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "timestamp": "2025-09-30T10:00:00Z",
+      "event_type": "code_change",
+      "action": "create_service_module",
+      "agent_id": "copilot-dev-001",
+      "session_id": "sess_123456",
+      "details": {
+        "message": "Created new booking service module with CRUD operations",
+        "files_affected": [
+          "/backend/src/modules/booking/booking.service.ts",
+          "/backend/src/modules/booking/booking.controller.ts",
+          "/backend/src/modules/booking/booking.module.ts"
+        ],
+        "components": ["backend", "booking_system"],
+        "metrics": {
+          "duration_ms": 2500,
+          "lines_changed": 150,
+          "files_count": 3
+        }
+      },
+      "context": {
+        "user_request": "Adicionar sistema de agendamento de serviços",
+        "project_phase": "development",
+        "environment": "development"
+      },
+      "metadata": {
+        "version": "1.0.0",
+        "git_commit": "a1b2c3d4",
+        "branch": "feature/booking-system"
+      }
+    },
+    {
+      "timestamp": "2025-09-30T10:05:00Z",
+      "event_type": "error_detected",
+      "action": "compilation_error",
+      "agent_id": "copilot-dev-001",
+      "session_id": "sess_123456",
+      "details": {
+        "message": "TypeScript compilation error detected",
+        "files_affected": ["/backend/src/modules/booking/booking.service.ts"],
+        "error": {
+          "code": "TS2304",
+          "message": "Cannot find name 'BookingStatus'",
+          "stack_trace": "..."
+        }
+      },
+      "context": {
+        "project_phase": "development",
+        "environment": "development",
+        "related_events": ["evt_code_change_001"]
+      }
+    }
+  ]
+}

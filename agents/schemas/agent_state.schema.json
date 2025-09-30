@@ -1,0 +1,332 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Agent State Schema",
+  "description": "Schema para validar o estado atual dos agentes do Fiz-Go",
+  "type": "object",
+  "required": ["version", "last_updated", "project_context", "development_status"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Versão do schema de estado"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp da última atualização do estado"
+    },
+    "project_context": {
+      "type": "object",
+      "required": ["name", "description", "current_phase", "tech_stack"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Nome do projeto"
+        },
+        "description": {
+          "type": "string",
+          "description": "Descrição breve do projeto"
+        },
+        "current_phase": {
+          "type": "string",
+          "enum": ["planning", "development", "testing", "deployment", "maintenance"],
+          "description": "Fase atual do desenvolvimento"
+        },
+        "tech_stack": {
+          "type": "object",
+          "properties": {
+            "frontend": {
+              "type": "string",
+              "description": "Tecnologia do frontend"
+            },
+            "backend": {
+              "type": "string", 
+              "description": "Tecnologia do backend"
+            },
+            "database": {
+              "type": "string",
+              "description": "Sistema de banco de dados"
+            },
+            "cache": {
+              "type": "string",
+              "description": "Sistema de cache"
+            },
+            "deployment": {
+              "type": "string",
+              "description": "Tecnologia de deployment"
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "development_status": {
+      "type": "object",
+      "required": ["backend_modules", "frontend_modules"],
+      "properties": {
+        "backend_modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "status", "features"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Nome do módulo"
+              },
+              "status": {
+                "type": "string",
+                "enum": ["planned", "in_progress", "implemented", "tested", "deployed"],
+                "description": "Status atual do módulo"
+              },
+              "features": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Lista de funcionalidades implementadas"
+              },
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Dependências do módulo"
+              },
+              "tests_coverage": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Porcentagem de cobertura de testes"
+              }
+            }
+          }
+        },
+        "frontend_modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "status", "features"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Nome do módulo"
+              },
+              "status": {
+                "type": "string",
+                "enum": ["planned", "in_progress", "implemented", "tested", "deployed"],
+                "description": "Status atual do módulo"
+              },
+              "features": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Lista de funcionalidades implementadas"
+              },
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Componentes Flutter implementados"
+              }
+            }
+          }
+        }
+      }
+    },
+    "current_focus": {
+      "type": "string",
+      "description": "Foco atual do desenvolvimento"
+    },
+    "next_priorities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Próximas prioridades do projeto"
+    },
+    "technical_decisions": {
+      "type": "object",
+      "description": "Decisões técnicas importantes tomadas",
+      "patternProperties": {
+        ".*": {
+          "type": "string"
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "severity", "created_at"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identificador único do bloqueio"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição do problema"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"],
+            "description": "Severidade do bloqueio"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do bloqueio"
+          },
+          "assigned_to": {
+            "type": "string",
+            "description": "Responsável pela resolução"
+          },
+          "estimated_resolution": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Estimativa de resolução"
+          }
+        }
+      },
+      "description": "Bloqueios ativos no desenvolvimento"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "code_quality": {
+          "type": "object",
+          "properties": {
+            "test_coverage": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "eslint_issues": {
+              "type": "number",
+              "minimum": 0
+            },
+            "security_vulnerabilities": {
+              "type": "number", 
+              "minimum": 0
+            }
+          }
+        },
+        "performance": {
+          "type": "object",
+          "properties": {
+            "api_response_time_ms": {
+              "type": "number",
+              "minimum": 0
+            },
+            "bundle_size_mb": {
+              "type": "number",
+              "minimum": 0
+            },
+            "build_time_seconds": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "description": "Métricas do projeto"
+    },
+    "environments": {
+      "type": "object",
+      "properties": {
+        "development": {
+          "$ref": "#/definitions/environment"
+        },
+        "staging": {
+          "$ref": "#/definitions/environment"
+        },
+        "production": {
+          "$ref": "#/definitions/environment"
+        }
+      },
+      "description": "Status dos ambientes"
+    }
+  },
+  "definitions": {
+    "environment": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["healthy", "degraded", "down", "maintenance"]
+        },
+        "last_deployment": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string"
+        },
+        "health_checks": {
+          "type": "object",
+          "properties": {
+            "api": {
+              "type": "boolean"
+            },
+            "database": {
+              "type": "boolean"
+            },
+            "cache": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "version": "1.0.0",
+      "last_updated": "2025-09-30T10:00:00Z",
+      "project_context": {
+        "name": "Fiz-Go",
+        "description": "Plataforma mobile/web para conectar clientes e profissionais",
+        "current_phase": "development",
+        "tech_stack": {
+          "frontend": "Flutter",
+          "backend": "NestJS/Node.js",
+          "database": "PostgreSQL",
+          "cache": "Redis",
+          "deployment": "Docker"
+        }
+      },
+      "development_status": {
+        "backend_modules": [
+          {
+            "name": "auth",
+            "status": "implemented",
+            "features": ["JWT Authentication", "Social Login"],
+            "dependencies": ["users"],
+            "tests_coverage": 85
+          }
+        ],
+        "frontend_modules": [
+          {
+            "name": "authentication_screens",
+            "status": "in_progress", 
+            "features": ["Login Form", "Registration Form"],
+            "components": ["LoginWidget", "RegisterWidget"]
+          }
+        ]
+      },
+      "current_focus": "Implementing user authentication flow",
+      "next_priorities": [
+        "Complete frontend authentication",
+        "Implement service booking system"
+      ],
+      "technical_decisions": {
+        "authentication": "JWT with refresh tokens",
+        "state_management": "BLoC pattern for Flutter"
+      }
+    }
+  ]
+}

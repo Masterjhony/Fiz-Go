@@ -1,0 +1,76 @@
+name: Search Tool
+version: "1.0"
+description: Ferramenta para busca semântica e textual no codebase
+
+parameters:
+  - name: query
+    type: string
+    required: true
+    description: Consulta de busca (pode ser texto livre ou regex)
+  
+  - name: search_type
+    type: enum
+    required: true
+    values: [semantic, grep, file_pattern]
+    description: Tipo de busca a ser realizada
+  
+  - name: include_pattern
+    type: string
+    required: false
+    description: Padrão glob para filtrar arquivos (ex: "*.ts", "src/**")
+  
+  - name: exclude_pattern
+    type: string
+    required: false
+    description: Padrão glob para excluir arquivos
+  
+  - name: max_results
+    type: integer
+    required: false
+    default: 20
+    description: Número máximo de resultados
+
+capabilities:
+  semantic_search:
+    description: Busca baseada em significado semântico
+    use_cases:
+      - Encontrar código relacionado a funcionalidades
+      - Localizar implementações similares
+      - Descobrir padrões de uso
+    
+  grep_search:
+    description: Busca textual exata ou regex
+    use_cases:
+      - Encontrar strings específicas
+      - Localizar variáveis ou funções
+      - Buscar padrões de código
+    
+  file_pattern_search:
+    description: Busca por nomes de arquivos
+    use_cases:
+      - Encontrar arquivos por extensão
+      - Localizar arquivos em diretórios específicos
+      - Filtrar por padrões de nomenclatura
+
+examples:
+  - query: "authentication JWT token"
+    search_type: semantic
+    description: Busca código relacionado à autenticação JWT
+    
+  - query: "function.*login|signin"
+    search_type: grep
+    description: Busca funções de login usando regex
+    
+  - query: "*.dto.ts"
+    search_type: file_pattern
+    description: Encontra todos os arquivos DTO TypeScript
+
+integration:
+  agent_logging: true
+  state_updates: false
+  requires_context: true
+
+permissions:
+  read_files: true
+  write_files: false
+  execute_commands: false

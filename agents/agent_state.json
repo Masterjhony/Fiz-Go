@@ -1,0 +1,80 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-09-30T00:00:00Z",
+  "project_context": {
+    "name": "Fiz-Go",
+    "description": "Plataforma mobile/web para conectar clientes e profissionais de serviços gerais",
+    "current_phase": "development",
+    "tech_stack": {
+      "frontend": "Flutter",
+      "backend": "NestJS/Node.js",
+      "database": "PostgreSQL",
+      "cache": "Redis",
+      "deployment": "Docker"
+    }
+  },
+  "development_status": {
+    "backend_modules": [
+      {
+        "name": "auth",
+        "status": "implemented",
+        "features": ["JWT", "Social Login", "Registration"]
+      },
+      {
+        "name": "users",
+        "status": "implemented",
+        "features": ["Profile Management", "Location Updates"]
+      },
+      {
+        "name": "services",
+        "status": "implemented",
+        "features": ["CRUD Operations", "Service Categories"]
+      },
+      {
+        "name": "orders",
+        "status": "implemented",
+        "features": ["Order Management", "Status Updates"]
+      },
+      {
+        "name": "chat",
+        "status": "implemented",
+        "features": ["Real-time Messaging", "WebSocket Gateway"]
+      },
+      {
+        "name": "payments",
+        "status": "implemented",
+        "features": ["Payment Processing", "Refunds"]
+      },
+      {
+        "name": "reviews",
+        "status": "implemented",
+        "features": ["Rating System", "Review Management"]
+      },
+      {
+        "name": "admin",
+        "status": "implemented",
+        "features": ["User Management", "System Administration"]
+      }
+    ],
+    "frontend_modules": [
+      {
+        "name": "main_app",
+        "status": "basic_structure",
+        "features": ["App Bootstrap", "Core Configuration"]
+      }
+    ]
+  },
+  "current_focus": "Project successfully restructured with AI agents system integrated",
+  "next_priorities": [
+    "Complete frontend development",
+    "Implement CI/CD pipeline",
+    "Add comprehensive testing",
+    "Deploy to production environment"
+  ],
+  "technical_decisions": {
+    "architecture": "Microservices with monolithic start",
+    "authentication": "JWT with social login support",
+    "real_time": "WebSocket for chat functionality",
+    "payments": "PIX integration with escrow system"
+  }
+}

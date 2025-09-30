@@ -1,0 +1,125 @@
+name: Repository Operations
+version: "1.0"
+description: Ferramentas para operações no repositório de código
+
+parameters:
+  - name: operation
+    type: enum
+    required: true
+    values: [read, create, update, delete, move, copy]
+    description: Tipo de operação a ser executada
+  
+  - name: file_path
+    type: string
+    required: true
+    description: Caminho absoluto do arquivo
+  
+  - name: content
+    type: string
+    required: false
+    description: Conteúdo para operações de criação/atualização
+  
+  - name: target_path
+    type: string
+    required: false
+    description: Caminho de destino para operações de mover/copiar
+  
+  - name: backup
+    type: boolean
+    required: false
+    default: true
+    description: Criar backup antes de modificações
+
+capabilities:
+  file_operations:
+    read:
+      description: Lê conteúdo de arquivos
+      supports: ["text files", "json", "yaml", "markdown"]
+      limitations: ["binary files", "large files > 10MB"]
+    
+    create:
+      description: Cria novos arquivos
+      auto_creates: ["directories", "parent folders"]
+      validations: ["path security", "content syntax"]
+    
+    update:
+      description: Atualiza arquivos existentes
+      methods: ["full replacement", "partial updates", "multi-replace"]
+      safety: ["backup creation", "syntax validation"]
+    
+    delete:
+      description: Remove arquivos
+      safety: ["confirmation required", "backup creation"]
+      restrictions: ["critical system files", "git files"]
+    
+    move:
+      description: Move/renomeia arquivos
+      preserves: ["file permissions", "git history"]
+      updates: ["import references", "relative paths"]
+    
+    copy:
+      description: Copia arquivos
+      options: ["preserve metadata", "update references"]
+
+  code_analysis:
+    syntax_check:
+      description: Valida sintaxe de código
+      languages: ["typescript", "javascript", "dart", "json", "yaml"]
+    
+    dependency_tracking:
+      description: Rastreia dependências entre arquivos
+      tracks: ["imports", "exports", "module references"]
+
+safety_measures:
+  validation:
+    - "Path traversal protection"
+    - "File extension validation"
+    - "Content size limits"
+    - "Syntax checking before write"
+  
+  backup:
+    - "Automatic backup for modifications"
+    - "Version tracking"
+    - "Rollback capability"
+  
+  permissions:
+    - "Read-only for system files"
+    - "Write protection for critical configs"
+    - "Git integration awareness"
+
+examples:
+  read_file:
+    operation: read
+    file_path: "/workspaces/Fiz-Go/backend/src/modules/auth/auth.service.ts"
+    
+  create_component:
+    operation: create
+    file_path: "/workspaces/Fiz-Go/frontend/lib/widgets/service_card.dart"
+    content: |
+      import 'package:flutter/material.dart';
+      
+      class ServiceCard extends StatelessWidget {
+        // Widget implementation
+      }
+  
+  update_config:
+    operation: update
+    file_path: "/workspaces/Fiz-Go/backend/package.json"
+    content: "// Updated package.json content"
+    
+  move_file:
+    operation: move
+    file_path: "/workspaces/Fiz-Go/old/location/file.ts"
+    target_path: "/workspaces/Fiz-Go/new/location/file.ts"
+
+integration:
+  agent_logging: true
+  state_updates: true
+  git_integration: true
+  
+permissions:
+  read_files: true
+  write_files: true
+  create_directories: true
+  move_files: true
+  delete_files: false  # Requires explicit confirmation
